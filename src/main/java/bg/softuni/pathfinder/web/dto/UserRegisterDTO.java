@@ -1,18 +1,24 @@
 package bg.softuni.pathfinder.web.dto;
 
 import bg.softuni.pathfinder.model.Level;
+import bg.softuni.pathfinder.validation.annotation.UniqueEmail;
+import bg.softuni.pathfinder.validation.annotation.UniqueUsername;
+import bg.softuni.pathfinder.validation.annotation.ValidatePasswords;
 import jakarta.validation.constraints.*;
 
 
+@ValidatePasswords
 public class UserRegisterDTO {
     @NotBlank(message = "Username must have value!")
     @Size(min = 2, max = 200)
+    @UniqueUsername()
     private String username;
 
     @NotEmpty
     @Size(min = 5, max = 200)
     private String fullName;
     @Email(regexp = ".*@.*")
+    @UniqueEmail
     private String email;
     @Min(1)
     @Max(90)

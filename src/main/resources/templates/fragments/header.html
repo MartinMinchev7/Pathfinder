@@ -3,11 +3,12 @@
         xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <nav class="main-nav">
         <ul>
+        <li>
+            <a th:href="@{/}">Home</a>
+        </li>
             <th:block sec:authotize="!isAuthenticated()">
 <!--            <th:block th:unless="${@currentUser.isLoggedIn()}">-->
-                <li >
-                    <a th:href="@{/}">Home</a>
-                </li>
+
                 <li>
                     <a th:href="@{/users/login}">Login</a>
                 </li>

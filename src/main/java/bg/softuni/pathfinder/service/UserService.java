@@ -36,4 +36,13 @@ public class UserService {
     public UserProfileDTO getProfileData() {
         return modelMapper.map(userHelperService.getUser(), UserProfileDTO.class);
     }
+
+
+    public boolean isUsernameUnique(String username) {
+        return userRepository.findByUsername(username).isEmpty();
+    }
+
+    public boolean isEmailUnique(String email) {
+        return !userRepository.existsByEmail(email);
+    }
 }

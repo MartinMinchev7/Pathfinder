@@ -27,28 +27,28 @@
 
     <!-- Boxes Section -->
     <section class="boxes">
-        <a href="/" class="main-btn" >
+        <a th:href="@{/routes/PEDESTRIAN}" class="main-btn" >
             <div class="box">
                 <img src="/images/pedestrian.png" height="150px" alt="">
                 <h3>Pedestrian</h3>
                 <p>Is this your Leg day?</p>
             </div>
         </a>
-        <a href="/" class="main-btn" >
+        <a th:href="@{/routes/BICYCLE}" class="main-btn" >
             <div class="box">
                 <img src="/images/bicycle.png" height="150px" alt="">
                 <h3>Bicycle</h3>
                 <p>When you want to be one with nature!</p>
             </div>
         </a>
-        <a href="/" class="main-btn" >
+        <a th:href="@{/routes/MOTORCYCLE}" class="main-btn" >
             <div class="box">
                 <img src="/images/motorcycle.png" height="150px" alt="">
                 <h3>Motorcycle</h3>
                 <p>When you want the wind to blow on your face!</p>
             </div>
         </a>
-        <a href="/" class="main-btn" >
+        <a th:href="@{/routes/CAR}" class="main-btn" >
             <div class="box">
                 <img src="/images/car.png" height="150px" alt="">
                 <h3>Car</h3>
@@ -59,12 +59,12 @@
 
     <!-- Info Section -->
     <section class="road">
-        <img src="/images/most-commented.jpg" alt="">
+        <img th:src="${commentedRoute.imageUrl}" alt="">
         <div>
-            <h2>The most commented route</h2>
-            <p>Read more about the most commented route and do not miss the
+            <h2 th:text="${commentedRoute.name}">The most commented route</h2>
+            <p th:text="${commentedRoute.description}">Read more about the most commented route and do not miss the
                 chance to visit it and give your opinion to help other users.</p>
-            <a href="/" class="btn">Learn More</a>
+            <a th:href="@{/routes/{id}(id=${commentedRoute.id})}" class="btn">Learn More</a>
         </div>
     </section>
 

@@ -2,22 +2,26 @@ package bg.softuni.pathfinder.service;
 
 import bg.softuni.pathfinder.data.RouteRepository;
 import bg.softuni.pathfinder.data.UserRepository;
+import bg.softuni.pathfinder.exception.RouteNotFoundException;
+import bg.softuni.pathfinder.model.CategoryType;
 import bg.softuni.pathfinder.model.Picture;
 import bg.softuni.pathfinder.model.Route;
+import bg.softuni.pathfinder.service.dto.RouteDetailsDTO;
 import bg.softuni.pathfinder.service.dto.RouteShortInfoDTO;
 import bg.softuni.pathfinder.web.dto.AddRouteDTO;
-import jakarta.transaction.Transactional;
+import bg.softuni.pathfinder.web.dto.RouteCategoryDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -81,5 +85,36 @@ public class RouteService {
         }
 
         return true;
+    }
+
+    public RouteDetailsDTO getDetails(Long id) {
+        Route route = routeRepository.findById(id)
+                .orElseThrow(() -> new RouteNotFoundException("Route with id: " + id + " was not found"));
+
+        RouteDetailsDTO dto = modelMapper.map(route, RouteDetailsDTO.class);
+        dto.setVideoUrl("https://www.youtube.com/embed/" + dto.getVideoUrl());
+        dto.setImageUrls(List.of("/images/pic4.jpg", "/images/pic1.jpg"));
+
+        return dto;
+    }
+
+    public List<RouteCategoryDTO> getRoutesByCategory(CategoryType category) {
+        List<Route> allByCategoryName = routeRepository.findAllByCategories_Name(category);
+
+        return allByCategoryName.stream()
+                .map(route -> modelMapper.map(route, RouteCategoryDTO.class))
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public RouteCategoryDTO getMostCommentedRoute() {
+        Route mostCommentedRoute = routeRepository.findAll().stream()
+                .max(Comparator.comparingInt(route -> route.getComments().size()))
+                .orElse(null);
+
+        RouteCategoryDTO dto = modelMapper.map(mostCommentedRoute, RouteCategoryDTO.class);
+        dto.setImageUrl("https://example.com/images/pic3.jpg");
+
+        return dto;
     }
 }
