@@ -5,16 +5,19 @@ import jakarta.validation.constraints.*;
 
 
 public class UserRegisterDTO {
-    @NotBlank
-    @Size(min = 2)
+    @NotBlank(message = "Username must have value!")
+    @Size(min = 2, max = 200)
     private String username;
+
     @NotEmpty
-    @Size(min = 5)
+    @Size(min = 5, max = 200)
     private String fullName;
-    @Email
+    @Email(regexp = ".*@.*")
     private String email;
+    @Min(1)
+    @Max(90)
     private Integer age;
-    @Size(min = 5)
+    @Size(min = 5, max = 100)
     private String password;
     private String confirmPassword;
 

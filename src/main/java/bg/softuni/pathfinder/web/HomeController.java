@@ -24,4 +24,12 @@ public class HomeController {
 
         return new ModelAndView("about");
     }
+
+    @GetMapping("/access-denied")
+    public ModelAndView accessDenied() {
+
+        return new ModelAndView("about");
+    }
+
+
 }

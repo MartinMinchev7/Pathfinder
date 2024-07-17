@@ -4,6 +4,7 @@ import bg.softuni.pathfinder.model.Level;
 import bg.softuni.pathfinder.service.UserService;
 import bg.softuni.pathfinder.web.dto.UserLoginDTO;
 import bg.softuni.pathfinder.web.dto.UserRegisterDTO;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,23 +25,27 @@ public class UserController {
 
     @GetMapping("register")
     public String viewRegister(Model model) {
-        model.addAttribute("registerData", new UserRegisterDTO());
+
+        if (!model.containsAttribute("registerData")) {
+            model.addAttribute("registerData", new UserRegisterDTO());
+        }
+
         model.addAttribute("levels", Level.values());
 
         return "register";
     }
 
     @PostMapping("register")
-    public String doRegister(UserRegisterDTO data,
+    public String doRegister(@Valid UserRegisterDTO data,
                              BindingResult bindingResult,
                              RedirectAttributes redirectAttributes) {
 
-//        if (bindingResult.hasErrors()) {
-//            redirectAttributes.addFlashAttribute("registerData", data);
-//            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.UserRegisterDRO", bindingResult);
-//            //handle errors
-//            return "redirect:/users/register";
-//        }
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("registerData", data);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.registerData", bindingResult);
+            //handle errors
+            return "redirect:/users/register";
+        }
 
         userService.register(data);
 
@@ -56,21 +61,16 @@ public class UserController {
         return modelAndView;
     }
 
-    @PostMapping("/login")
-    public String login(UserLoginDTO loginData) {
+    @GetMapping("/login-error")
+    public ModelAndView viewLoginError() {
+        ModelAndView modelAndView = new ModelAndView("login");
 
-        userService.login(loginData);
+        modelAndView.addObject("showErrorMessage", true);
+        modelAndView.addObject("loginData", new UserLoginDTO());
 
-        return "redirect:/";
+        return modelAndView;
     }
 
-    @PostMapping("/logout")
-    public String logout() {
-
-        userService.logout();
-
-        return "redirect:/";
-    }
 
     @GetMapping("/profile")
     public ModelAndView profile() {

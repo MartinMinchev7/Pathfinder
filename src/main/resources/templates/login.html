@@ -22,11 +22,12 @@
     <div class="d-flex justify-content-center">
 
         <div class="row g-3 align-items-center">
-
             <form
                     th:action="@{/users/login}"
                     th:method="post"
-                    th:object="${loginData}"  >
+                    th:object="${loginData}"
+            >
+                <div class="bg-danger" th:if="${showErrorMessage}" th:text="'Invalid username or password'"></div>
                 <div>
                     <div class="col-auto">
                         <label for="inputUsername" class="col-form-label ">Username</label>
@@ -36,7 +37,6 @@
                                th:field="*{username}"
                                type="text"
                                name="username"
-                               required minlength="4" maxlength="20"
                                id="inputUsername"
                                class="form-control"
                                aria-describedby="usernameHelpInline">
@@ -51,7 +51,6 @@
                                th:field="*{password}"
                                type="password"
                                name="password"
-                               required minlength="4" maxlength="20"
                                id="inputPassword" class="form-control"
                                aria-describedby="passwordHelpInline">
                     </div>

@@ -3,9 +3,7 @@ package bg.softuni.pathfinder.web.dto;
 import jakarta.validation.constraints.NotBlank;
 
 public class UserLoginDTO {
-    @NotBlank
     private String username;
-    @NotBlank
     private String password;
 
     public UserLoginDTO() {
